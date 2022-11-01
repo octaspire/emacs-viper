@@ -1,0 +1,28 @@
+;;;; This viper mode configuration is based heavily on John Hawkins's
+;;;; viper configuration sample, intended to make the viper mode more
+;;;; comfortable for seasoned emacsers. The original can be found at:
+;;;; http://traeki.freeshell.org/files/viper-sample
+(setq
+ viper-case-fold-search        't  ; Ingore case when searching.
+ viper-ex-style-editing        nil ; Delete past line's beginning.
+ viper-ex-style-motion         nil ; Move past line's beginning.
+ viper-expert-level            '5  ; Use max Emacs experience level [1,5]
+ viper-inhibit-startup-message 't  ; Don't show viper's start up message.
+ viper-want-ctl-h-help         t)  ; Make <C-h> to behave as in Emacs.
+
+;; (1) <C-d> deletes character in insert mode.
+;; (2) Ensure <C-v> works as expected. <M-v> doesn't have to set up.
+;; (3) Make <C-w> to behave like in emacs, to kill region.
+;; (4) Allow Emacs style yanking. Viper-nil keeps point and text as is.
+;; (5) Use <M-p> and <M-n> to cycle between the things that <.> command should do.
+(define-key viper-insert-global-user-map "\C-d" 'delete-char)                ; (1)
+(define-key viper-vi-global-user-map "\C-v" 'scroll-up)                      ; (2)
+(define-key viper-insert-global-user-map "\C-v" 'scroll-up)                  ; (2)
+(define-key viper-insert-global-user-map "\C-w" 'kill-region)                ; (3)
+(define-key viper-vi-global-user-map "\C-y" 'yank)                           ; (4)
+(define-key viper-vi-global-user-map "\C-e" 'viper-nil)                      ; (4)
+(define-key viper-vi-global-user-map "\M-p" 'viper-prev-destructive-command) ; (5)
+(define-key viper-vi-global-user-map "\M-n" 'viper-next-destructive-command) ; (5)
+
+;; Use <g> and <motion> to search the thing that motion chooses.
+(viper-buffer-search-enable)

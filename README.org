@@ -1,0 +1,22 @@
+Configuration file for running GNU Emacs with
+Vi(per) keybindings, usable and nice without
+any external packages.
+
+If wanted, it is possible to allow installation
+of two useful packages: magit and slime. But this
+is not done by default.
+
+To manage these dotfiles using GNU stow:
+
+#+begin_src shell
+cd emacs-viper
+make stow
+#+end_src
+
+This will create symbolic links to user's home directory,
+and append small snippet of shell script in the end of
+~$HOME/.bashrc~, if it isn't already there. This should
+bring the value of PATH variable to Emacs in macOS, if
+Emacs is started using shortcut (without
+exec-patch-from-shell package).
+
