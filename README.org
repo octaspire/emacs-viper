@@ -13,10 +13,13 @@ cd emacs-viper
 make stow
 #+end_src
 
-This will create symbolic links to user's home directory,
-and append small snippet of shell script in the end of
-~$HOME/.bashrc~, if it isn't already there. This should
-bring the value of PATH variable to Emacs in macOS, if
-Emacs is started using shortcut (without
-exec-patch-from-shell package).
+This will create symbolic links to user's home directory.
 
+Some keybindings are:
+
+| KEY         | TYPE  | ACTION                                            |
+|-------------+-------+---------------------------------------------------|
+| ~M-/~       |       | Expand (complete) anything with ~hippie-expand~   |
+| ~C-c SPC~   |       | Clear ORG table cell with ~org-table-blank-field~ |
+| ~g<motion>~ | VIPER | Search the thing that vi motion chooses           |
+| ~backspace~ | VIPER | Fixed in term-mode's char submode by advicing     |

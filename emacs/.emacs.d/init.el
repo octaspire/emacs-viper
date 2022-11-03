@@ -18,26 +18,7 @@
 ;;; OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 ;;; SOFTWARE.
 (defvar octaspire/config-dir (file-name-as-directory user-emacs-directory))
-(defvar octaspire/wspace-sty '(face trailing tabs))
-
-;; When using without any external packages, we cannot use
-;; exec-path-from-shell to get the PATH into Emacs in macOS,
-;; when Emacs is not started from command line. To fix this,
-;; add the following into end of .bashrc:
-;;
-;; # MACOS_PATH_HELPER_PROVISION
-;; # Get correct PATH value into GUI emacs that is not started from command line,
-;; # without using exec-path-from-shell package.
-;; PATH_HELPER=/usr/libexec/path_helper
-;; if [ -x "$PATH_HELPER" ]; then
-;;   eval `"$PATH_HELPER" -s`
-;;   defaults write "$HOME"/.MacOSX/environment PATH "$PATH"
-;; fi
-;; # MACOS_PATH_HELPER_PROVIDED
-;;
-;; This will make the PATH evailable for Emacs in macOS, when
-;; started from GUI shortcut-icon. Please note, that running
-;; make stow will add the above snippet, if needed.
+(defvar octaspire/wspace-sty '(face trailing tabs tab-mark))
 
 (setq
  auto-save-file-name-transforms      `((".*" ,temporary-file-directory t))
@@ -52,7 +33,6 @@
  ido-file-extensions-order           '(".org" ".txt" ".md" ".c" ".h" ".cpp" ".hpp" ".py" ".mk" ".xml" ".ini" ".cfg")
  ido-ignore-extensions               t ; Make Ido to use completion-ignored-extensions.
  ido-use-filename-at-point           'guess
- indent-tabs-mode                    nil
  org-export-with-smart-quotes        1
  org-html-checkbox-type              'html
  org-html-doctype                    "html5"
@@ -74,7 +54,7 @@
 (when (eq system-type 'darwin)
   (setq mac-command-key-is-meta t
         mac-command-modifier    'meta
-	mac-option-key-is-meta  nil
+        mac-option-key-is-meta  nil
         mac-option-modifier     nil)
   (push "/usr/local/bin" exec-path))
 
@@ -89,13 +69,14 @@
 
 (unless
     (or (< (length user-full-name) 2)
-	(< (length user-mail-address) 2))
+        (< (length user-mail-address) 2))
   (setq org-html-postamble (concat org-html-postamble "<br/>%a %e")))
 
 (setq-default
  calendar-week-start-day               1
  display-line-numbers-current-absolute t
  display-time-24hr-format              t
+ indent-tabs-mode                      nil
  inhibit-startup-message               t
  large-file-warning-threshold          nil
  ring-bell-function                    'ignore
@@ -115,7 +96,7 @@
 (set-language-environment           "UTF-8")
 (show-paren-mode                    1)
 (which-function-mode                1)
-(whitespace-mode                   +1)
+(global-whitespace-mode            +1)
 
 (when window-system
   (scroll-bar-mode                 -1)
@@ -153,6 +134,31 @@
     (c-set-offset 'arglist-intro '+)
     (c-set-offset 'statement-block-intro '+)))
 
+(defun fix-viper-del-backward-char-in-insert (orig-fun &rest args)
+  "Fix viper backspace in term-mode's char submode."
+  (interactive)
+  (if (and (derived-mode-p 'term-mode)
+           (eq viper-current-state 'insert-state)
+           (term-in-char-mode))
+      (term-send-raw-string "\C-h")
+    (apply orig-fun args)))
+
+(advice-add 'viper-del-backward-char-in-insert
+            :around #'fix-viper-del-backward-char-in-insert)
+
+(defun fix-viper-maybe-checkout (orig-fun &rest args)
+  "Fix saving of GIT version controlled files during viper mode."
+  (interactive)
+  (when (and (featurep 'vc-hooks)
+             (not (memq
+                   (vc-backend
+                    (expand-file-name (buffer-file-name buf)))
+                   '(nil GIT))))
+    (apply orig-fun args)))
+
+(advice-add 'viper-maybe-checkout
+            :around #'fix-viper-maybe-checkout)
+
 (defun octaspire/term-enter-char-submode ()
   "Set style for (ansi-)term's char submode."
   (interactive)
@@ -170,9 +176,9 @@
   (interactive)
   (if (term-in-line-mode)
       (progn (term-char-mode)
-	     (octaspire/term-enter-char-submode))
+             (octaspire/term-enter-char-submode))
       (progn (term-line-mode)
-	     (octaspire/term-enter-line-submode))))
+             (octaspire/term-enter-line-submode))))
 
 (define-key term-mode-map (kbd "C-c C-j") 'octaspire/term-toggle-submode)
 (define-key term-mode-map (kbd "C-c C-k") 'octaspire/term-toggle-submode)
@@ -188,11 +194,12 @@
 (add-hook 'text-mode-hook     'flyspell-mode)
 (add-hook 'prog-mode-hook     'flyspell-mode)
 (add-hook 'c-mode-common-hook 'octaspire/c-mode-hook)
-(add-hook 'term-load-hook     (lambda () (term-line-mode) (octaspire/term-enter-line-submode)))
+(add-hook 'term-load-hook     (lambda ()
+                                (term-line-mode)
+                                (octaspire/term-enter-line-submode)))
 
 (load-theme 'tango-dark t)
 (set-face-attribute 'default nil :height 140)
 
 (load custom-file t) ; load if present.
 (provide 'octaspire-init-el)
-

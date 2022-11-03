@@ -4,7 +4,7 @@ VERBOSE=1
 
 stow:
 	@stow --verbose ${VERBOSE} --target ${HOME} emacs
-	@/bin/bash etc/handle_bashrc.sh
+
 stow?:
 	@stow --no --verbose ${VERBOSE} --target ${HOME} emacs
 
@@ -16,10 +16,12 @@ unstow?:
 
 clean:
 	@rm -rf ${FILES}auto-save-list \
-		${FILES}transient      \
-		${FILES}ido.last       \
-		${FILES}places         \
-		${FILES}history        \
-		${FILES}elpa           \
-		${FILES}eshell
+                ${FILES}custom.el      \
+                ${FILES}elpa           \
+                ${FILES}eshell         \
+                ${FILES}history        \
+                ${FILES}ido.last       \
+                ${FILES}places         \
+                ${FILES}transient      \
+                ${FILES}url
 
