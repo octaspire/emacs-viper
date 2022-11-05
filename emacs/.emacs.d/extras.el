@@ -31,12 +31,21 @@
 (use-package magit
   :ensure t)
 
-(let ((sbcl (executable-find "sbcl")))
+(let ((sbcl (executable-find "sbcl"))
+      (style "sbcl"))
   (when sbcl
     (use-package slime
       :ensure t
       :config
-      (setq inferior-lisp-program sbcl))))
+      (setq inferior-lisp-program     sbcl
+            common-lisp-style         style
+            common-lisp-style-default style))
+    (use-package paredit
+      :ensure t
+      :config
+      (add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode 1)))
+      (add-hook 'slime-mode-hook      (lambda () (paredit-mode 1)))
+      (add-hook 'slime-repl-mode-hook (lambda () (paredit-mode 1))))))
 
 (provide 'octaspire-extras-el)
 

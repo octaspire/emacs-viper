@@ -19,6 +19,7 @@
 ;;; SOFTWARE.
 (defvar octaspire/config-dir (file-name-as-directory user-emacs-directory))
 (defvar octaspire/wspace-sty '(face trailing tabs tab-mark))
+(defvar octaspire/emacs-evil-use-extras nil)
 
 (setq
  auto-save-file-name-transforms      `((".*" ,temporary-file-directory t))
@@ -58,10 +59,16 @@
         mac-option-modifier     nil)
   (push "/usr/local/bin" exec-path))
 
-;; Uncomment this to iniatlize the package system, install
-;; couple of packages, and start the emacs sever. If this
-;; stays commented out, no external packages are loaded.
-;; (load (concat octaspire/config-dir "extras.el"))
+
+(load custom-file t) ; Load custom.el if present.
+
+;; Set variable octaspire/emacs-evil-use-extras to t to initialize
+;; the package system, install few packages, and start the Emacs
+;; sever. If this variable is nil, no external packages are loaded.
+;; A good place to change this variable is in file custom.el that
+;; is not version controlled.
+(when octaspire/emacs-evil-use-extras
+  (load (concat octaspire/config-dir "extras.el")))
 
 (let ((aspell (executable-find "aspell")))
   (when aspell
@@ -100,7 +107,8 @@
 
 (when window-system
   (scroll-bar-mode                 -1)
-  (tool-bar-mode                   -1))
+  (tool-bar-mode                   -1)
+  (set-frame-size (selected-frame) 120 40))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -201,5 +209,4 @@
 (load-theme 'tango-dark t)
 (set-face-attribute 'default nil :height 140)
 
-(load custom-file t) ; load if present.
 (provide 'octaspire-init-el)

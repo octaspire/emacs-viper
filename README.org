@@ -1,25 +1,92 @@
-Configuration file for running GNU Emacs with
-Vi(per) keybindings, usable and nice without
-any external packages.
+* Lightweight configuration file for GNU Emacs
 
-If wanted, it is possible to allow installation
-of two useful packages: magit and slime. But this
-is not done by default.
+#+CAPTION: Screenshot of GNU Emacs 29.0.50 running this configuration.
+[[./assets/emacs_viper_screenshot.png]]
 
-To manage these dotfiles using GNU stow:
+** About
+
+This is a small configuration file for running GNU Emacs with Vi(per)
+keybindings, usable and nice without any external packages.
+Configuration file is also pretty short to make it easy to audit.
+
+Keybindings used are a combination of Vi and Emacs bindings.
+This is done by using the builtin Viper mode at (Emacs) expert
+level 5, that gives wide range of Emacs bindings available in
+addition to the Vi bindings.
+
+Configuration should be usable even with older versions
+of GNU Emacs, but it is mostly tested on versions 28.X,
+and support of older versions is not a priority.
+
+As stated, the configuration doesn't install any packages,
+internal nor external, in its default mode. If wanted, it
+is however possible to allow installation of few useful
+packages. This can be done by adding this line to file
+=custom.el=:
+
+#+begin_src elisp
+(setq octaspire/emacs-evil-use-extras t)
+#+end_src
+
+This will cause the following packages to be installed:
+
+| PACKAGE NAME | DESCRIPTION                                                         |
+|--------------+---------------------------------------------------------------------|
+| use-package  | Helps with configuring and installing packages.                     |
+| magit        | Supercharged interface to the Git version control system.           |
+| slime        | Mode for Common Lisp development. Installed if ~sbcl~ is found.     |
+| paredit      | Structural editing of Lisp code. Installed only if ~sbcl~ is found. |
+
+** Installation
+
+To use this configuration give the following commands:
 
 #+begin_src shell
 cd emacs-viper
-make stow
+make link
 #+end_src
 
-This will create symbolic links to user's home directory.
+This will create symbolic link to user's home directory.
+Please note, that if you already have a ~$HOME/.emacs.d~
+directory, the links cannot be created until you remove
+or rename the existing directory. Link can be removed
+with command ~make unlink~. To delete directories
+created by Emacs (and packages, if installed), run
+command ~make clean~.
 
-Some keybindings are:
+If you have GNU stow installed, it is possible to manage
+this configuration using it:
 
-| KEY         | TYPE  | ACTION                                            |
-|-------------+-------+---------------------------------------------------|
-| ~M-/~       |       | Expand (complete) anything with ~hippie-expand~   |
-| ~C-c SPC~   |       | Clear ORG table cell with ~org-table-blank-field~ |
-| ~g<motion>~ | VIPER | Search the thing that vi motion chooses           |
-| ~backspace~ | VIPER | Fixed in term-mode's char submode by advicing     |
+#+begin_src shell
+cd emacs-viper
+stow -t ~/ emacs
+#+end_src
+
+** Configuration
+
+The default mode is to run without any packages.
+It is, however, possible to allow installation of few useful
+packages. This can be done by adding this line to file
+=custom.el=:
+
+#+begin_src elisp
+(setq octaspire/emacs-evil-use-extras t)
+#+end_src
+
+File =custom.el= is ignored by version control, so it
+is a good place to put local customizations.
+
+** Usage
+
+Some notable keybindings are:
+
+| KEY               | TYPE  | ACTION                                                                          |
+|-------------------+-------+---------------------------------------------------------------------------------|
+| ~M-/~             |       | Expand (complete) anything with ~hippie-expand~                                 |
+| ~C-c SPC~         |       | Clear ORG table cell with ~org-table-blank-field~                               |
+| ~g<motion>~       | VIPER | Search the thing that vi motion chooses                                         |
+| ~backspace~       | VIPER | Fixed in term-mode's char submode by advicing                                   |
+| ~.~, ~M-n~, ~N-p~ | VIPER | Vi's dot repeats a command, Emacs extends this by allowing selection of command |
+| ~C-x p f~         |       | Find files in project (doesn't use projectile)                                  |
+| ~C-x g~           | MAGIT | Runs ~magit-status~                                                             |
+

@@ -1,27 +1,22 @@
-.PHONY: clean stow unstow stow? unstow?
-FILES=emacs/.emacs.d/
-VERBOSE=1
+.PHONY: link unlink clean
+TDIR=${HOME}/.emacs.d
+FILES=emacs/.emacs.d
 
-stow:
-	@stow --verbose ${VERBOSE} --target ${HOME} emacs
+link:
+	@ln -s ${PWD}/${FILES}/ ${TDIR}
 
-stow?:
-	@stow --no --verbose ${VERBOSE} --target ${HOME} emacs
-
-unstow:
-	@stow --verbose ${VERBOSE} --target ${HOME} --delete emacs
-
-unstow?:
-	@stow --no --verbose ${VERBOSE} --target ${HOME} --delete emacs
+unlink:
+	@unlink ${TDIR}
 
 clean:
-	@rm -rf ${FILES}auto-save-list \
-                ${FILES}custom.el      \
-                ${FILES}elpa           \
-                ${FILES}eshell         \
-                ${FILES}history        \
-                ${FILES}ido.last       \
-                ${FILES}places         \
-                ${FILES}transient      \
-                ${FILES}url
+	@rm -rf ${FILES}/auto-save-list \
+                ${FILES}/custom.el      \
+                ${FILES}/elpa           \
+                ${FILES}/eshell         \
+                ${FILES}/history        \
+                ${FILES}/ido.last       \
+                ${FILES}/places         \
+                ${FILES}/projects       \
+                ${FILES}/transient      \
+                ${FILES}/url
 
