@@ -16,7 +16,7 @@ addition to the Vi bindings.
 
 Configuration should be usable even with older versions
 of GNU Emacs, but it is mostly tested on versions 28.X,
-and support of older versions is not a priority.
+and 29.0.X and support of older versions is not a priority.
 
 As stated, the configuration doesn't install any packages,
 internal nor external, in its default mode. If wanted, it
@@ -54,12 +54,20 @@ with command ~make unlink~. To delete directories
 created by Emacs (and packages, if installed), run
 command ~make clean~.
 
-If you have GNU stow installed, it is possible to manage
+If you have GNU ~stow~ installed, it is possible to manage
 this configuration using it:
 
 #+begin_src shell
 cd emacs-viper
 stow -t ~/ emacs
+#+end_src
+
+If you don't have ~make~ or ~stow~ installed,
+it is possible to run the linking script manually:
+
+#+begin_src shell
+cd emacs-viper
+sh /etc/link_to_home_dir.sh
 #+end_src
 
 ** Configuration
@@ -90,3 +98,13 @@ Some notable keybindings are:
 | ~C-x p f~         |       | Find files in project (doesn't use projectile)                                  |
 | ~C-x g~           | MAGIT | Runs ~magit-status~                                                             |
 
+** Troubleshooting
+
+*** Configuration doesn't load
+
+If the configuration cannot be loaded, check if your system's
+home directory has files =~/.emacsl.el= and/or =~/.emacs=.
+Emacs will load these files before =~/.emacs.d/init.el= gets
+a change to load. Rename or remove those files, possibly
+merging the contents with ~/.emacs.d/init.el~ (if needed)
+to get the configuration to load.

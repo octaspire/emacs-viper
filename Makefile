@@ -3,7 +3,7 @@ TDIR=${HOME}/.emacs.d
 FILES=emacs/.emacs.d
 
 link:
-	@ln -s ${PWD}/${FILES}/ ${TDIR}
+	@sh etc/link_to_home_dir.sh
 
 unlink:
 	@unlink ${TDIR}
