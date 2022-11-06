@@ -19,6 +19,7 @@
 ;;; SOFTWARE.
 (defvar octaspire/config-dir (file-name-as-directory user-emacs-directory))
 (defvar octaspire/wspace-sty '(face trailing tabs tab-mark))
+(defvar octaspire/user-extras-file (concat octaspire/config-dir "extras.el"))
 (defvar octaspire/emacs-evil-use-extras nil)
 
 (setq
@@ -53,12 +54,10 @@
 (require 'viper)
 
 (when (eq system-type 'darwin)
-  (setq mac-command-key-is-meta t
-        mac-command-modifier    'meta
+  (setq mac-command-modifier    'meta
         mac-option-key-is-meta  nil
         mac-option-modifier     nil)
   (push "/usr/local/bin" exec-path))
-
 
 (load custom-file t) ; Load custom.el if present.
 
@@ -68,7 +67,7 @@
 ;; A good place to change this variable is in file custom.el that
 ;; is not version controlled.
 (when octaspire/emacs-evil-use-extras
-  (load (concat octaspire/config-dir "extras.el")))
+  (load octaspire/user-extras-file))
 
 (let ((aspell (executable-find "aspell")))
   (when aspell
@@ -113,19 +112,38 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (defun octaspire/init-file-open ()
-  "Visit Emacs initialization file."
+  "Visit either user's Emacs initialization file, or the extra initialization."
   (interactive)
-  (find-file user-init-file))
+  (let ((bufname (buffer-file-name)))
+    (if (and (stringp bufname)
+             (file-truename bufname)
+             (string= (file-truename bufname)
+                      (file-truename user-init-file)))
+        (find-file octaspire/user-extras-file) ; Initialization already visible, show extras.
+      (find-file user-init-file))))
+
+(defun octaspire/init-file-lint ()
+  "Do simple linting of user's Emacs initialization files."
+  (interactive)
+  (let ((result1 (byte-compile-file user-init-file))
+        (result2 (byte-compile-file octaspire/user-extras-file)))
+    ;; Remove generated files.
+    (delete-file (byte-compile-dest-file user-init-file))
+    (delete-file (byte-compile-dest-file octaspire/user-extras-file))
+    ;; Result is t if both files compiled cleanly.
+    (and result1 result2)))
 
 (defun octaspire/terminal-launch ()
   "Launch terminal (ansi-term) inside Emacs."
   (interactive)
   (ansi-term explicit-shell-file-name)
-  (term-line-mode)
-  (octaspire/term-enter-line-submode))
+  (term-char-mode)
+  (octaspire/term-enter-char-submode))
 
 (defun octaspire/c-mode-hook ()
   "Set C/C++ coding style."
+  (defvar c-basic-offset)  ; Get rid of warnings about
+  (defvar c-default-style) ; assigning to free variable.
   (let ((spaces 2))
     (setq
      c-basic-offset   spaces
@@ -160,7 +178,7 @@
   (when (and (featurep 'vc-hooks)
              (not (memq
                    (vc-backend
-                    (expand-file-name (buffer-file-name buf)))
+                    (expand-file-name (buffer-file-name)))
                    '(nil GIT))))
     (apply orig-fun args)))
 

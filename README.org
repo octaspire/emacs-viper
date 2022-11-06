@@ -84,19 +84,36 @@ packages. This can be done by adding this line to file
 File =custom.el= is ignored by version control, so it
 is a good place to put local customizations.
 
-** Usage
+** Key Bindings
 
-Some notable keybindings are:
+This chapter lists some useful key bindings, divided into
+sections by functionality. Table below lists few of
+the most important bindings:
 
-| KEY               | TYPE  | ACTION                                                                          |
-|-------------------+-------+---------------------------------------------------------------------------------|
-| ~M-/~             |       | Expand (complete) anything with ~hippie-expand~                                 |
-| ~C-c SPC~         |       | Clear ORG table cell with ~org-table-blank-field~                               |
-| ~g<motion>~       | VIPER | Search the thing that vi motion chooses                                         |
-| ~backspace~       | VIPER | Fixed in term-mode's char submode by advicing                                   |
-| ~.~, ~M-n~, ~N-p~ | VIPER | Vi's dot repeats a command, Emacs extends this by allowing selection of command |
-| ~C-x p f~         |       | Find files in project (doesn't use projectile)                                  |
-| ~C-x g~           | MAGIT | Runs ~magit-status~                                                             |
+| KEY               | TYPE      | ACTION                                                                          |
+|-------------------+-----------+---------------------------------------------------------------------------------|
+| ~M-/~             |           | Expand (complete) anything with ~hippie-expand~                                 |
+| ~C-c SPC~         |           | Clear ORG table cell with ~org-table-blank-field~                               |
+| ~g<motion>~       | VIPER     | Search the thing that vi motion chooses                                         |
+| ~backspace~       | VIPER     | Fixed in term-mode's char submode by advicing                                   |
+| ~.~, ~M-n~, ~N-p~ | VIPER     | Vi's dot repeats a command, Emacs extends this by allowing selection of command |
+| ~C-x p f~         |           | Find files in project (doesn't use projectile)                                  |
+| ~C-x g~           | MAGIT     | Runs ~magit-status~                                                             |
+| ~C-c C-j~         | ANSI-TERM | Toggle between char- and line sub modes of the =ansi-term= mode.                |
+
+*** Key Bindings for working with bookmarks
+
+| KEY                    | ACTION                                                            |
+|------------------------+-------------------------------------------------------------------|
+| ~C-x r m bookmark RET~ | Set bookmark to the current file or directory with the given name |
+| ~C-x r l~              | List bookmarks                                                    |
+| ~C-x r b bookmark RET~ | Jump to named bookmark                                            |
+| ~M-x bookmark-save~    | Save all bookmarks to the default bookmark file                   |
+
+*** Key Bindings for working with initialization files
+
+| KEY     | ACTION                                      |
+| ~C-c i~ | Open either user's init or extra init file. |
 
 ** Troubleshooting
 

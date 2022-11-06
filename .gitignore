@@ -1,10 +1,13 @@
 .DS_Store
 emacs/.emacs.d/auto-save-list
+emacs/.emacs.d/bookmarks
 emacs/.emacs.d/custom.el
 emacs/.emacs.d/elpa
 emacs/.emacs.d/eshell
 emacs/.emacs.d/history
 emacs/.emacs.d/ido.last
+emacs/.emacs.d/init.elc
+emacs/.emacs.d/extras.elc
 emacs/.emacs.d/places
 emacs/.emacs.d/projects
 emacs/.emacs.d/transient

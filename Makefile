@@ -9,12 +9,19 @@ unlink:
 	@unlink ${TDIR}
 
 clean:
-	@rm -rf ${FILES}/auto-save-list \
+	@rm -rf ${FILES}/.DS_Store      \
+                .DS_Store               \
+                emacs/.DS_Store         \
+                etc/.DS_Store           \
+                ${FILES}/auto-save-list \
+                ${FILES}/bookmarks      \
                 ${FILES}/custom.el      \
                 ${FILES}/elpa           \
                 ${FILES}/eshell         \
                 ${FILES}/history        \
                 ${FILES}/ido.last       \
+                ${FILES}/init.elc       \
+                ${FILES}/extras.elc     \
                 ${FILES}/places         \
                 ${FILES}/projects       \
                 ${FILES}/transient      \
