@@ -36,6 +36,6 @@ elif [ -d "$CONFIG3" ]; then
     echo "---------------------------------------------------------------------"
     exit 1
 else
-    ln -s ${PWD}/${FILES}/ ${CONFIG3}
+    ln -s "${PWD}/${FILES}/" "${CONFIG3}"
 fi
 
