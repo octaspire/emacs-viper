@@ -30,12 +30,13 @@ packages. This can be done by adding this line to file
 
 This will cause the following packages to be installed:
 
-| PACKAGE NAME | DESCRIPTION                                                         |
-|--------------+---------------------------------------------------------------------|
-| use-package  | Helps with configuring and installing packages.                     |
-| magit        | Supercharged interface to the Git version control system.           |
-| slime        | Mode for Common Lisp development. Installed if ~sbcl~ is found.     |
-| paredit      | Structural editing of Lisp code. Installed only if ~sbcl~ is found. |
+| PACKAGE NAME     | DESCRIPTION                                                         |
+|------------------+---------------------------------------------------------------------|
+| use-package      | Helps with configuring and installing packages.                     |
+| magit            | Supercharged interface to the Git version control system.           |
+| slime            | Mode for Common Lisp development. Installed if ~sbcl~ is found.     |
+| paredit          | Structural editing of Lisp code. Installed only if ~sbcl~ is found. |
+| goto-last-change | Jump back to previous edit positions in buffers.                    |
 
 ** Installation
 
@@ -90,16 +91,17 @@ This chapter lists some useful key bindings, divided into
 sections by functionality. Table below lists few of
 the most important bindings:
 
-| KEY               | TYPE      | ACTION                                                                          |
-|-------------------+-----------+---------------------------------------------------------------------------------|
-| ~M-/~             |           | Expand (complete) anything with ~hippie-expand~                                 |
-| ~C-c SPC~         |           | Clear ORG table cell with ~org-table-blank-field~                               |
-| ~g<motion>~       | VIPER     | Search the thing that vi motion chooses                                         |
-| ~backspace~       | VIPER     | Fixed in term-mode's char submode by advicing                                   |
-| ~.~, ~M-n~, ~N-p~ | VIPER     | Vi's dot repeats a command, Emacs extends this by allowing selection of command |
-| ~C-x p f~         |           | Find files in project (doesn't use projectile)                                  |
-| ~C-x g~           | MAGIT     | Runs ~magit-status~                                                             |
-| ~C-c C-j~         | ANSI-TERM | Toggle between char- and line sub modes of the =ansi-term= mode.                |
+| KEY               | TYPE             | ACTION                                                                                         |
+|-------------------+------------------+------------------------------------------------------------------------------------------------|
+| ~M-/~             |                  | Expand (complete) anything with ~hippie-expand~                                                |
+| ~C-c SPC~         |                  | Clear ORG table cell with ~org-table-blank-field~                                              |
+| ~g<motion>~       | VIPER            | Search the thing that vi motion chooses                                                        |
+| ~backspace~       | VIPER            | Fixed in term-mode's char submode by advicing                                                  |
+| ~.~, ~M-n~, ~N-p~ | VIPER            | Vi's dot repeats a command, Emacs extends this by allowing selection of command                |
+| ~C-x p f~         |                  | Find files in project (doesn't use projectile)                                                 |
+| ~C-x g~           | MAGIT            | Runs ~magit-status~                                                                            |
+| ~C-c C-j~         | ANSI-TERM        | Toggle between char- and line sub modes of the =ansi-term= mode. Line mode shows line numbers. |
+| ~C-x C-/~         | GOTO-LAST-CHANGE | Keep jumping backwards to last edit positions in buffer.                                       |
 
 *** Key Bindings for working with bookmarks
 
@@ -125,3 +127,35 @@ Emacs will load these files before =~/.emacs.d/init.el= gets
 a change to load. Rename or remove those files, possibly
 merging the contents with ~/.emacs.d/init.el~ (if needed)
 to get the configuration to load.
+
+** Miscellaneous Notes
+
+Some useful additions could be:
+
+*** ~$HOME/.bashrc~
+
+Modified ~PS1~ with dynamic line generation, to see better
+where previous input was given:
+
+#+begin_src shell
+genline()
+{
+  perl -E "say '-' x $((COLUMNS - 6))"
+}
+
+PS1='$(genline)\n\w\n\$ '
+#+end_src
+
+*** ~$HOME/.inputrc~
+
+Handy history completion with ~up~/~down~ and (~C-p~/~C-n~ in Emacs). Somewhat similar
+to ~C-r~, but starting from the already given input:
+
+#+begin_src shell
+#up
+"\e[A":history-search-backward
+"\C-p":history-search-backward
+#down
+"\e[B":history-search-forward
+"\C-n":history-search-forward
+#+end_src

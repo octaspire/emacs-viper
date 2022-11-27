@@ -23,31 +23,31 @@
 (defvar octaspire/emacs-evil-use-extras nil)
 
 (setq
- auto-save-file-name-transforms      `((".*" ,temporary-file-directory t))
- backup-directory-alist              `((".*" . ,temporary-file-directory))
- column-number-mode                  t
- custom-file                         (concat octaspire/config-dir "custom.el")
- display-line-numbers-type           'relative
- explicit-shell-file-name            (if (file-exists-p "/usr/local/bin/bash") "/usr/local/bin/bash" "/bin/bash")
- ido-create-new-buffer               'always
- ido-enable-flex-matching            t
- ido-everywhere                      t
- ido-file-extensions-order           '(".org" ".txt" ".md" ".c" ".h" ".cpp" ".hpp" ".py" ".mk" ".xml" ".ini" ".cfg")
- ido-ignore-extensions               t ; Make Ido to use completion-ignored-extensions.
- ido-use-filename-at-point           'guess
- org-export-with-smart-quotes        1
- org-html-checkbox-type              'html
- org-html-doctype                    "html5"
- org-html-head-include-default-style nil
- org-html-html5-fancy                t
- org-html-htmlize-output-type        'inline-css
- org-html-postamble                  "Exported %T. &nbsp; | &nbsp; Modified %C.<br/>%c"
- org-replace-disputed-keys           t
- org-src-fontify-natively            1
- org-src-preserve-indentation        t
- user-full-name                      ""
- user-mail-address                   ""
- viper-mode                          t)
+ auto-save-file-name-transforms        `((".*" ,temporary-file-directory t))
+ backup-directory-alist                `((".*" . ,temporary-file-directory))
+ column-number-mode                    t
+ custom-file                           (concat octaspire/config-dir "custom.el")
+ display-line-numbers-type             'relative
+ explicit-shell-file-name              (if (file-exists-p "/usr/local/bin/bash") "/usr/local/bin/bash" "/bin/bash")
+ ido-create-new-buffer                 'always
+ ido-enable-flex-matching              t
+ ido-everywhere                        t
+ ido-file-extensions-order             '(".org" ".txt" ".md" ".c" ".h" ".cpp" ".hpp" ".py" ".mk" ".xml" ".ini" ".cfg")
+ ido-ignore-extensions                 t ; Make Ido to use completion-ignored-extensions.
+ ido-use-filename-at-point             'guess
+ org-export-with-smart-quotes          1
+ org-html-checkbox-type                'html
+ org-html-doctype                      "html5"
+ org-html-head-include-default-style   nil
+ org-html-html5-fancy                  t
+ org-html-htmlize-output-type          'inline-css
+ org-html-postamble                    "Exported %T. &nbsp; | &nbsp; Modified %C.<br/>%c"
+ org-replace-disputed-keys             t
+ org-src-fontify-natively              1
+ org-src-preserve-indentation          t
+ user-full-name                        ""
+ user-mail-address                     ""
+ viper-mode                            t)
 
 (require 'org)
 (require 'term)
@@ -58,6 +58,10 @@
         mac-option-key-is-meta  nil
         mac-option-modifier     nil)
   (push "/usr/local/bin" exec-path))
+
+(when (eq system-type 'berkeley-unix)
+  (setq x-meta-keysym  'super
+        x-super-keysym 'meta))
 
 (load custom-file t) ; Load custom.el if present.
 
@@ -91,23 +95,23 @@
  tags-revert-without-query             t
  whitespace-style                      octaspire/wspace-sty)
 
-(electric-pair-mode                 1)
-(global-auto-revert-mode            1)
-(global-display-line-numbers-mode   1)
-(global-subword-mode               +1)
-(ido-mode                           1)
-(menu-bar-mode                     -1)
-(save-place-mode                    1)
-(savehist-mode                      1)
-(set-language-environment           "UTF-8")
-(show-paren-mode                    1)
-(which-function-mode                1)
-(global-whitespace-mode            +1)
+(electric-pair-mode                    1)
+(global-auto-revert-mode               1)
+(global-display-line-numbers-mode      1)
+(global-subword-mode                  +1)
+(ido-mode                              1)
+(menu-bar-mode                        -1)
+(save-place-mode                       1)
+(savehist-mode                         1)
+(set-language-environment              "UTF-8")
+(show-paren-mode                       1)
+(which-function-mode                   1)
+(global-whitespace-mode               +1)
 
 (when window-system
-  (scroll-bar-mode                 -1)
-  (tool-bar-mode                   -1)
-  (set-frame-size (selected-frame) 120 40))
+  (scroll-bar-mode                    -1)
+  (tool-bar-mode                      -1)
+  (set-frame-size (selected-frame)     130 50))
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -188,14 +192,16 @@
 (defun octaspire/term-enter-char-submode ()
   "Set style for (ansi-)term's char submode."
   (interactive)
-  (hl-line-mode -1)
-  (setq-local whitespace-style nil))
+  (display-line-numbers-mode     -1)
+  (setq whitespace-style         nil
+        show-trailing-whitespace nil))
 
 (defun octaspire/term-enter-line-submode ()
   "Set style for (ansi-)term's line submode."
   (interactive)
-  (hl-line-mode 1)
-  (setq-local whitespace-style octaspire/wspace-sty))
+  (display-line-numbers-mode     +1)
+  (setq whitespace-style         nil
+        show-trailing-whitespace nil))
 
 (defun octaspire/term-toggle-submode ()
   "Toggle (ansi-)term mode(s) between char and line submodes."
@@ -225,6 +231,6 @@
                                 (octaspire/term-enter-line-submode)))
 
 (load-theme 'tango-dark t)
-(set-face-attribute 'default nil :height 140)
+(set-face-attribute 'default nil :height 110)
 
 (provide 'octaspire-init-el)

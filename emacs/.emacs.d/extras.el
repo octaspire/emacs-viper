@@ -32,6 +32,10 @@
 (use-package magit
   :ensure t)
 
+(use-package goto-last-change
+  :ensure t
+  :bind (("C-x C-/" . goto-last-change)))
+
 (let ((sbcl (executable-find "sbcl"))
       (style "sbcl"))
   (when sbcl
