@@ -79,7 +79,7 @@ packages. This can be done by adding this line to file
 =custom.el=:
 
 #+begin_src elisp
-(setq octaspire/emacs-evil-use-extras t)
+(defvar octaspire/emacs-evil-use-extras t)
 #+end_src
 
 File =custom.el= is ignored by version control, so it
@@ -94,7 +94,6 @@ the most important bindings:
 | KEY               | TYPE             | ACTION                                                                                         |
 |-------------------+------------------+------------------------------------------------------------------------------------------------|
 | ~M-/~             |                  | Expand (complete) anything with ~hippie-expand~                                                |
-| ~C-c SPC~         |                  | Clear ORG table cell with ~org-table-blank-field~                                              |
 | ~g<motion>~       | VIPER            | Search the thing that vi motion chooses                                                        |
 | ~backspace~       | VIPER            | Fixed in term-mode's char submode by advicing                                                  |
 | ~.~, ~M-n~, ~N-p~ | VIPER            | Vi's dot repeats a command, Emacs extends this by allowing selection of command                |
@@ -102,6 +101,16 @@ the most important bindings:
 | ~C-x g~           | MAGIT            | Runs ~magit-status~                                                                            |
 | ~C-c C-j~         | ANSI-TERM        | Toggle between char- and line sub modes of the =ansi-term= mode. Line mode shows line numbers. |
 | ~C-x C-/~         | GOTO-LAST-CHANGE | Keep jumping backwards to last edit positions in buffer.                                       |
+| ~C-c c~           |                  | Compile.                                                                                       |
+
+*** Key Bindings for working with Org mode
+
+| KEY           | ACTION                                            |
+|---------------+---------------------------------------------------|
+| ~C-c SPC~     | Clear ORG table cell with ~org-table-blank-field~ |
+| ~C-c C-x C-i~ | Clock in using ~org-clock-in~                     |
+| ~C-c C-x C-o~ | Clock out using ~org-clock-out~                   |
+| ~C-c C-x C-r~ | Create ORG clock report with ~org-clock-report~   |
 
 *** Key Bindings for working with bookmarks
 
@@ -158,4 +167,37 @@ to ~C-r~, but starting from the already given input:
 #down
 "\e[B":history-search-forward
 "\C-n":history-search-forward
+#+end_src
+
+*** Basis for Time Tracking Diary
+
+When using a file having the format shown below,
+every day should start with creating a new entry
+for the day, and listing the work items for the day.
+
+Clocking in to an item can then be done by going
+to the item's header and using =C-c C-x C-i=.
+Task can be changed by clocking in to another
+task (any running task is clocked out
+automatically). Clocking out from a task
+can be done manually using =C-c C-x C-o=.
+
+Report for the day can be generated using
+=C-c C-x C-r= while the point is inside the
+~clocktable~ block. This will set the maximum
+level to value that is larger than the default.
+
+#+begin_src org
+#+TITLE: Time Tracking Diary
+* 2022
+** December
+*** Sunday 2022-12-18
+#+BEGIN: clocktable :scope subtree :maxlevel 6
+#+END:
+**** External Work
+***** item-1
+***** item-2
+**** Internal Work
+***** item-1
+***** item-2
 #+end_src

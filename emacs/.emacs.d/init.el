@@ -59,7 +59,8 @@
         mac-option-modifier     nil)
   (push "/usr/local/bin" exec-path))
 
-(when (eq system-type 'berkeley-unix)
+(when (or (eq system-type 'gnu/linux)
+          (eq system-type 'berkeley-unix))
   (setq x-meta-keysym  'super
         x-super-keysym 'meta))
 
@@ -217,8 +218,10 @@
 (define-key term-raw-map  (kbd "C-c C-j") 'octaspire/term-toggle-submode)
 (define-key term-raw-map  (kbd "C-c C-k") 'octaspire/term-toggle-submode)
 
-(define-key org-mode-map  (kbd "C-c SPC") 'org-table-blank-field)
+(define-key org-mode-map  (kbd "C-c SPC")     'org-table-blank-field)
+(define-key org-mode-map  (kbd "C-c C-x C-r") 'org-clock-report)
 
+(global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-c i") 'octaspire/init-file-open)
 (global-set-key (kbd "C-c t") 'octaspire/terminal-launch)
 (global-set-key [remap dabbrev-expand] 'hippie-expand) ; M-/ to expand anything
@@ -231,6 +234,6 @@
                                 (octaspire/term-enter-line-submode)))
 
 (load-theme 'tango-dark t)
-(set-face-attribute 'default nil :height 110)
+(set-face-attribute 'default nil :height 130)
 
 (provide 'octaspire-init-el)
