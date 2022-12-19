@@ -22,6 +22,8 @@
 (defvar octaspire/user-extras-file (concat octaspire/config-dir "extras.el"))
 (defvar octaspire/emacs-evil-use-extras nil)
 
+(require 'org-clock)
+
 (setq
  auto-save-file-name-transforms        `((".*" ,temporary-file-directory t))
  backup-directory-alist                `((".*" . ,temporary-file-directory))
@@ -35,6 +37,9 @@
  ido-file-extensions-order             '(".org" ".txt" ".md" ".c" ".h" ".cpp" ".hpp" ".py" ".mk" ".xml" ".ini" ".cfg")
  ido-ignore-extensions                 t ; Make Ido to use completion-ignored-extensions.
  ido-use-filename-at-point             'guess
+ org-clock-persist                     t   ; Continue clocking if Emacs is restarted when clock is running.
+ org-clock-persist-query-resume        nil ; Do not ask about resuming, just resume the clock.
+ org-clock-in-resume                   t
  org-export-with-smart-quotes          1
  org-html-checkbox-type                'html
  org-html-doctype                      "html5"
@@ -48,6 +53,8 @@
  user-full-name                        ""
  user-mail-address                     ""
  viper-mode                            t)
+
+(org-clock-persistence-insinuate)
 
 (require 'org)
 (require 'term)
@@ -229,6 +236,7 @@
 (add-hook 'text-mode-hook     'flyspell-mode)
 (add-hook 'prog-mode-hook     'flyspell-mode)
 (add-hook 'c-mode-common-hook 'octaspire/c-mode-hook)
+(add-hook 'org-mode-hook      (lambda () (setq  org-pretty-entities t)))
 (add-hook 'term-load-hook     (lambda ()
                                 (term-line-mode)
                                 (octaspire/term-enter-line-submode)))

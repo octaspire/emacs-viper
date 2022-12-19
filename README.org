@@ -112,6 +112,14 @@ the most important bindings:
 | ~C-c C-x C-o~ | Clock out using ~org-clock-out~                   |
 | ~C-c C-x C-r~ | Create ORG clock report with ~org-clock-report~   |
 
+If Emacs is closed while a clock is active, it is saved
+to a file named by variable ~org-clock-persist-file~.
+Then when the org-file containing the saved clock is
+opened later during a new Emacs session, the clock
+is resumed automatically, without prompting the user.
+This makes it possible to clock out from clocks that were
+started during previous sessions.
+
 *** Key Bindings for working with bookmarks
 
 | KEY                    | ACTION                                                            |
