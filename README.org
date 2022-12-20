@@ -105,12 +105,15 @@ the most important bindings:
 
 *** Key Bindings for working with Org mode
 
-| KEY           | ACTION                                            |
-|---------------+---------------------------------------------------|
-| ~C-c SPC~     | Clear ORG table cell with ~org-table-blank-field~ |
-| ~C-c C-x C-i~ | Clock in using ~org-clock-in~                     |
-| ~C-c C-x C-o~ | Clock out using ~org-clock-out~                   |
-| ~C-c C-x C-r~ | Create ORG clock report with ~org-clock-report~   |
+| KEY           | ACTION                                                                     |
+|---------------+----------------------------------------------------------------------------|
+| ~C-c SPC~     | Clear ORG table cell with ~org-table-blank-field~                          |
+| ~C-c C-x C-i~ | Clock in using ~org-clock-in~                                              |
+| ~C-c C-x C-o~ | Clock out using ~org-clock-out~                                            |
+| ~C-c C-x C-r~ | Create ORG clock report with ~org-clock-report~                            |
+| ~S-up~        | Shift timestamp up (and recompute interval) using ~org-shiftup~            |
+| ~S-down~      | Shift timestamp down (and recompute interval) using ~org-shiftdown~        |
+| ~C-c C-y~     | Recompute interval using ~org-evaluate-time-range~ after editing timestamp |
 
 If Emacs is closed while a clock is active, it is saved
 to a file named by variable ~org-clock-persist-file~.

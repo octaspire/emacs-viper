@@ -50,6 +50,7 @@
  org-replace-disputed-keys             t
  org-src-fontify-natively              1
  org-src-preserve-indentation          t
+ org-time-stamp-rounding-minutes       '(0 1) ; Shift up and down by one minute.
  user-full-name                        ""
  user-mail-address                     ""
  viper-mode                            t)
